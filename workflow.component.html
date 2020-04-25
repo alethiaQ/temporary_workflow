@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="card-title mb-0"><span class="lstick"></span>Workflow Table</h4> -->
+                <span class="card-subtitle">Enter asset id's to filter table.</span>
+                
+                    <div class="form-group ">
+                       <textarea class="form-control" rows="5" placeholder="Search" [(ngModel)]="searchTerm"> 
+                            </textarea>
+                        <button class="btn btn-sm btn-rounded btn-secondary" type="submit" (click)="getFilteredData()"ngbTooltip="Search">
+                            <i class=" icon-magnifier"></i>
+                        </button>
+                        <button class="btn btn-sm btn-rounded btn-secondary" type="button" (click)="refreshTableButton()" ngbTooltip="Reset">
+                            <i class="icon-refresh"></i>
+                        </button>
+                    </div>
+                
+                <table class="table table-striped border table-hover table-dark">
+                    <thead class="bg-inverse text-white">
+                        <tr>
+                            <th>Status</th>
+                            <th>Asset ID</th>
+                            <th>Title</th>
+                            <th>Added</th>
+                            <th>Updated</th>
+                            <th>Workflow</th>
+                            <!-- <th>Accounts</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let client of filterClient">
+                            <td>
+                                <button *ngIf="client.status === 'FAILED'" class="btn btn-block btn-sm btn-danger" type="button" ngbTooltip="Failed">
+                                    <i class="icon-close"></i>
+                                </button>
+                                <button class="btn btn-block btn-sm btn-success" *ngIf="client.status === 'SUCCESSFUL'" type="button" ngbTooltip="Successful">
+                                    <i class="icon-check"></i>
+                                </button>
+                                <button class="btn btn-block btn-sm btn-info" type="button" *ngIf="client.status === 'PROCESSING'" ngbTooltip="Processing">
+                                    <i class="fas fa-spinner"></i>
+                                </button>
+                                <button class="btn btn-block btn-sm btn-warning" type="button" *ngIf="client.status === 'TIMEOUT'" ngbTooltip="Timeout">
+                                    <i class="icon-clock"></i>
+                                </button>
+                                <!-- <ngb-highlight [result]="client.status" [term]="searchTerm"></ngb-highlight> -->
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="client.assetId" [term]="searchTerm"></ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="client.title" [term]="searchTerm"></ngb-highlight>
+                            </td>
+                            <td>
+                                {{ readableTime(client.added) }}
+                            </td>
+                            <td>
+                               {{readableTime(client.updated)}}
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="client.workflow" [term]="searchTerm"></ngb-highlight>
+                            </td>
+                            <!-- <td> 
+                                <div class="containter" *ngFor="let account of client.mpxAccountStatuses | keyvalue">
+                                    <span class="side-badge badge badge-pill badge-success"  *ngIf="account.value === 'SUCCESSFUL'">
+                                        <i class="icon-check"></i>
+                                    </span>
+                                    <span class="side-badge badge badge-pill badge-danger"  *ngIf="account.value === 'FAILED'">
+                                        <i class="icon-close"></i>
+                                    </span>
+                                    <span class="side-badge badge badge-pill badge-info"  *ngIf="account.value === 'PROCESSING'">
+                                        <i class="icon-reload"></i>
+                                    </span>
+                                    
+                                    <small>{{mapMPX(account.key)}}</small>
+                                    
+                                </div>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
